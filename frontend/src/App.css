@@ -1,0 +1,145 @@
+.app {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 40px 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #111827;
+}
+
+.card > p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.controls {
+  margin-top: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+select {
+  width: 100%;
+  max-width: 260px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+  color: #111827;
+}
+
+textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  resize: vertical;
+  color: #111827;
+  background: #ffffff;
+  line-height: 1.5;
+}
+
+button {
+  width: fit-content;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.answer,
+.sources {
+  margin-top: 32px;
+}
+
+.answer h2,
+.sources h2 {
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.markdown-answer {
+  line-height: 1.7;
+  font-size: 16px;
+  color: #374151;
+}
+
+.markdown-answer h1 {
+  font-size: 28px;
+  margin: 24px 0 14px;
+  color: #111827;
+}
+
+.markdown-answer h2 {
+  font-size: 22px;
+  margin: 22px 0 12px;
+  color: #111827;
+}
+
+.markdown-answer h3 {
+  font-size: 18px;
+  margin: 18px 0 10px;
+  color: #111827;
+}
+
+.markdown-answer p {
+  margin: 10px 0;
+}
+
+.markdown-answer ul,
+.markdown-answer ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.markdown-answer li {
+  margin: 8px 0;
+}
+
+.markdown-answer code {
+  background: #eef2f7;
+  color: #111827;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: normal;
+}
+
+.sources ul {
+  padding-left: 22px;
+}
+
+.sources li {
+  margin: 8px 0;
+  color: #4b5563;
+  word-break: break-word;
+}

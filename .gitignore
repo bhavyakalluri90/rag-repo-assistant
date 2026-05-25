@@ -1,0 +1,26 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+*.pyc
+
+# Secrets
+backend/.env
+.env
+
+# Chroma / vector DB
+backend/chroma_db/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# OS
+.DS_Store
+
+# Cloned test repo build outputs
+data/repo/node_modules/
+data/repo/build/
+data/repo/dist/
+data/repo/.env
