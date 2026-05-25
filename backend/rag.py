@@ -3,8 +3,44 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
+import os
+import requests
 
 load_dotenv()
+
+def call_claude(prompt: str):
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+
+    if not api_key:
+        return "ANTHROPIC_API_KEY is missing. Add it to backend/.env and restart the server."
+
+    url = "https://api.anthropic.com/v1/messages"
+
+    headers = {
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+    }
+
+    payload = {
+        "model": "claude-haiku-4-5-20251001",
+        "max_tokens": 1500,
+        "temperature": 0,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+    }
+
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+
+    if response.status_code != 200:
+        return f"Claude API error {response.status_code}: {response.text}"
+
+    data = response.json()
+    return data["content"][0]["text"]
 
 CHROMA_PATH = "./chroma_db"
 
@@ -131,16 +167,30 @@ def ask_rag(question: str, mode: str = "general"):
 def get_prompt_for_mode(mode: str):
     if mode == "files":
         return """
-You are a senior codebase analysis assistant.
+You are a senior codebase navigation assistant.
 
 Use only the context below.
 
-The user wants to know which files are relevant.
+The user wants to find relevant files in this repository.
 
-Return:
-1. Relevant files
-2. Why each file matters
-3. What the user should inspect first
+Return the answer in clean Markdown:
+
+## Most Relevant Files
+
+For each file, include:
+- File path
+- Why it matters
+- What to inspect inside it
+
+## Suggested Reading Order
+
+List the files in the order a developer should read them.
+
+## Confidence
+
+Mention if the context is incomplete.
+
+Do not invent files that are not in the context.
 
 Context:
 {context}
@@ -151,18 +201,40 @@ Question:
 
     if mode == "jira":
         return """
-You are a senior software engineer helping plan a Jira ticket.
+You are a senior software engineer helping convert a Jira ticket into an implementation plan.
 
 Use only the context below.
 
-Return:
-1. Summary of the requested change
-2. Relevant files
-3. Step-by-step implementation plan
-4. Test plan
-5. Risks or unknowns
+Return clean Markdown with these sections:
 
-Do not invent files that are not in the context.
+## Ticket Summary
+
+Summarize the requested change.
+
+## Relevant Files
+
+List files from the context and explain why each matters.
+
+## Implementation Plan
+
+Give step-by-step implementation tasks.
+
+## Code Change Suggestions
+
+Mention specific functions, components, or modules that may need changes.
+
+## Test Plan
+
+List unit, integration, and UI test cases.
+
+## Risks / Unknowns
+
+Mention anything missing from the available context.
+
+Rules:
+- Do not invent files.
+- Do not claim the change is already implemented unless the context proves it.
+- Be practical and concise.
 
 Context:
 {context}

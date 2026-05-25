@@ -9,11 +9,23 @@ CHROMA_PATH = "./chroma_db"
 
 ALLOWED_EXTENSIONS = [".md", ".txt", ".tsx", ".ts", ".js", ".jsx", ".py"]
 
+EXCLUDED_DIRS = {
+    "node_modules",
+    ".git",
+    "build",
+    "dist",
+    ".next",
+    "coverage",
+    "__pycache__",
+}
+
 
 def load_files():
     documents = []
 
-    for root, _, files in os.walk(DATA_PATH):
+    for root, dirs, files in os.walk(DATA_PATH):
+        dirs[:] = [d for d in dirs if d not in EXCLUDED_DIRS]
+
         for file in files:
             if any(file.endswith(ext) for ext in ALLOWED_EXTENSIONS):
                 path = os.path.join(root, file)
